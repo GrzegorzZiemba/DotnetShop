@@ -9,8 +9,9 @@ import {
 	Typography,
 } from "@mui/material";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router";
+import agent from "../../app/api/agent";
 import { Product } from "../../app/models/product";
 
 const ProductDetails = () => {
@@ -18,10 +19,9 @@ const ProductDetails = () => {
 	const [product, setProduct] = useState<Product | null>();
 	const [loading, setLoading] = useState(true);
 	useEffect(() => {
-		axios
-			.get(`http://localhost:5000/api/products/${id}`)
-			.then((response) => setProduct(response.data))
-			.catch((error) => console.log(error))
+		agent.Catalog.details(parseInt(id))
+			.then((res) => setProduct(res))
+			.catch((error) => console.log(error.response))
 			.finally(() => setLoading(false));
 	}, [id]);
 
